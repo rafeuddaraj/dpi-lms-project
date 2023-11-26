@@ -9,7 +9,7 @@ export default function Input({ classes, labelId, ...attributes }) {
                     {...attributes}
                     id={labelId}
                     required
-                    class={`login-input ${classes}`}
+                    className={`login-input ${classes}`}
                 />
             </div>
         </>
