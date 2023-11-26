@@ -14,79 +14,127 @@ import DashboardPage from "./pages/Admin/DashboardPage";
 
 import "./style/output.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import useAuthCheck from "./hooks/useAuthCheck";
+import PrivateRoute from "./components/Student/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
+import AdminRoute from "./components/Admin/AdminRoute";
+import useAdminAuthCheck from "./hooks/useAdminAuthCHeck";
+import NotFound from "./components/ui/NotFound";
 
 export default function App() {
-    return (
+    const authCheck = useAuthCheck();
+    const adminAuthCheck = useAdminAuthCheck();
+    return !authCheck || !adminAuthCheck ? (
+        <div>Authentication Checking</div>
+    ) : (
         <Router>
             <Routes>
-                <Route path="/" element={<LoginPage />} />
-                <Route path="/registration" element={<RegistrationPage />} />
+                <Route
+                    path="/"
+                    element={
+                        <PublicRoute>
+                            <LoginPage />
+                        </PublicRoute>
+                    }
+                />
+                <Route
+                    path="/registration"
+                    element={
+                        <PublicRoute>
+                            <RegistrationPage />
+                        </PublicRoute>
+                    }
+                />
                 <Route
                     path="/quiz/:id"
                     element={
-                        <Layout>
-                            <QuizPage />
-                        </Layout>
+                        <PrivateRoute>
+                            <Layout>
+                                <QuizPage />
+                            </Layout>
+                        </PrivateRoute>
                     }
                 />
                 <Route
                     path="/course/:id"
                     element={
-                        <Layout>
-                            <Course />
-                        </Layout>
+                        <PrivateRoute>
+                            <Layout>
+                                <Course />
+                            </Layout>
+                        </PrivateRoute>
                     }
                 />
                 <Route
                     path="/leaderboard"
                     element={
-                        <Layout>
-                            <LeaderBoardPage />
-                        </Layout>
+                        <PrivateRoute>
+                            <Layout>
+                                <LeaderBoardPage />
+                            </Layout>
+                        </PrivateRoute>
                     }
                 />
                 {/* Admin setup */}
-                <Route path="/admin" element={<AdminLogin />} />
+                <Route
+                    path="/admin"
+                    element={
+                        <PublicRoute>
+                            <AdminLogin />
+                        </PublicRoute>
+                    }
+                />
                 <Route
                     path="/admin/assignment-mark"
                     element={
-                        <Layout>
-                            <AdminAssignmentMarksPage />
-                        </Layout>
+                        <AdminRoute>
+                            <Layout>
+                                <AdminAssignmentMarksPage />
+                            </Layout>
+                        </AdminRoute>
                     }
                 />
                 <Route
                     path="/admin/assignment"
                     element={
-                        <Layout>
-                            <AdminAssignmentPage />
-                        </Layout>
+                        <AdminRoute>
+                            <Layout>
+                                <AdminAssignmentPage />
+                            </Layout>
+                        </AdminRoute>
                     }
                 />
                 <Route
                     path="/admin/quiz"
                     element={
-                        <Layout>
-                            <AdminQuizPage />
-                        </Layout>
+                        <AdminRoute>
+                            <Layout>
+                                <AdminQuizPage />
+                            </Layout>
+                        </AdminRoute>
                     }
                 />
                 <Route
                     path="/admin/videos"
                     element={
-                        <Layout>
-                            <AdminVideosPage />
-                        </Layout>
+                        <AdminRoute>
+                            <Layout>
+                                <AdminVideosPage />
+                            </Layout>
+                        </AdminRoute>
                     }
                 />
                 <Route
                     path="/admin/dashboard"
                     element={
-                        <Layout>
-                            <DashboardPage />
-                        </Layout>
+                        <AdminRoute>
+                            <Layout>
+                                <DashboardPage />
+                            </Layout>
+                        </AdminRoute>
                     }
                 />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
     );

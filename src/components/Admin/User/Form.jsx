@@ -1,12 +1,43 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../Input/Input";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { authApi } from "../../../features/auth/authApi";
 
 export default function Form() {
+    const [data, setData] = useState({
+        email: "",
+        password: "",
+    });
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // working
+        dispatch(authApi.endpoints.adminLogin.initiate(data)).then(() => {
+            navigate("/admin/dashboard");
+        });
+    };
+
+    const handleChange = (e) => {
+        setData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value,
+        }));
+    };
     return (
         <>
-            <form className="mt-8 space-y-6" action="#" method="POST">
+            <form
+                onSubmit={handleSubmit}
+                className="mt-8 space-y-6"
+                action="#"
+                method="POST">
                 <div className="rounded-md shadow-sm -space-y-px">
                     <Input
+                        onChange={handleChange}
+                        value={data.email}
                         classes={"rounded-t-md"}
                         labelId={"email-address"}
                         id="email-address"
@@ -17,6 +48,8 @@ export default function Form() {
                         placeholder="Email address"
                     />
                     <Input
+                        onChange={handleChange}
+                        value={data.password}
                         classes={"rounded-t-md"}
                         labelId={"password"}
                         id="password"

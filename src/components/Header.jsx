@@ -1,7 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/image/learningportal.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoggedOut } from "../features/auth/authSlice";
+import { authSelect } from "../features/auth/authSelects";
 
 export default function Header() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { user } = useSelector(authSelect);
+    const handleLogout = () => {
+        if (user?.role === "student") {
+            dispatch(userLoggedOut("lmsAuth"));
+        } else {
+            dispatch(userLoggedOut("lmsAuthAdmin"));
+        }
+        navigate("/");
+    };
     return (
         <>
             <nav className="shadow-md">
@@ -11,8 +25,10 @@ export default function Header() {
                     </Link>
                     <div className="flex items-center gap-3">
                         <Link to={"/leaderboard"}>Leaderboard</Link>
-                        <h2 className="font-bold">Saad Hasan</h2>
-                        <button className="flex gap-2 border border-cyan items-center px-4 py-1 rounded-full text-sm transition-all hover:bg-cyan ">
+                        <h2 className="font-bold">{user?.name}</h2>
+                        <button
+                            onClick={handleLogout}
+                            className="flex gap-2 border border-cyan items-center px-4 py-1 rounded-full text-sm transition-all hover:bg-cyan ">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

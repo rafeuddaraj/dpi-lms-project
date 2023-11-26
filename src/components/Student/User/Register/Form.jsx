@@ -1,13 +1,45 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../../Input/Input";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { authApi } from "../../../../features/auth/authApi";
 
 export default function Form() {
+    const [data, setData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleInput = (e) => {
+        setData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value,
+        }));
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (data.confirmPassword === data.password) {
+            dispatch(authApi.endpoints.register.initiate(data)).then(() => {
+                navigate("/course/1");
+            });
+        }
+    };
     return (
         <>
-            <form className="mt-8 space-y-6" action="#" method="POST">
+            <form
+                onSubmit={handleSubmit}
+                className="mt-8 space-y-6"
+                action="#"
+                method="POST">
                 <div className="rounded-md shadow-sm -space-y-px">
                     <Input
+                        onChange={handleInput}
                         labelId={"name"}
+                        value={data.name}
                         name="name"
                         type="text"
                         autoComplete="name"
@@ -16,6 +48,8 @@ export default function Form() {
                         placeholder={"Student name"}
                     />
                     <Input
+                        value={data.email}
+                        onChange={handleInput}
                         labelId={"email-address"}
                         name="email"
                         type="email"
@@ -25,6 +59,8 @@ export default function Form() {
                         placeholder={"Email address"}
                     />
                     <Input
+                        value={data.password}
+                        onChange={handleInput}
                         labelId={"password"}
                         name="password"
                         type="password"
@@ -34,6 +70,8 @@ export default function Form() {
                         placeholder={"Password"}
                     />
                     <Input
+                        value={data.confirmPassword}
+                        onChange={handleInput}
                         labelId={"confirm-password"}
                         name="confirmPassword"
                         type="password"
@@ -47,7 +85,7 @@ export default function Form() {
                 <div className="flex items-center justify-end">
                     <div className="text-sm">
                         <Link
-                            to={'/'}
+                            to={"/"}
                             className="font-medium text-violet-600 hover:text-violet-500">
                             Login
                         </Link>

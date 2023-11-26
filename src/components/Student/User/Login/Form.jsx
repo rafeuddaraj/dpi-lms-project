@@ -1,10 +1,35 @@
 import { Link } from "react-router-dom";
 import Input from "../../../Input/Input";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {authApi} from '../../../../features/auth/authApi'
+import { useNavigate } from "react-router-dom";
 
 export default function Form() {
+    const [data,setData] = useState({
+        email:'',
+        password:''
+    })
+    const navigate = useNavigate()
+
+    const dispatch = useDispatch()
+
+    const handleSubmit = (e)=>{
+        e.preventDefault()
+        // working
+        dispatch(authApi.endpoints.login.initiate(data))
+        .then(()=>{
+            navigate('/course/1')
+        })
+    }
+
+    const handleChange = (e)=>{
+        setData(prevData=>({...prevData, [e.target.name]: e.target.value}))
+    }
+
     return (
         <>
-            <form className="mt-8 space-y-6" action="#" method="POST">
+            <form onSubmit={handleSubmit} className="mt-8 space-y-6" action="#" method="POST">
                 <div className="rounded-md shadow-sm -space-y-px">
                     <Input
                         labelId={"email-address"}
@@ -12,6 +37,8 @@ export default function Form() {
                         type="email"
                         autoComplete="email"
                         required
+                        value={data.email}
+                        onChange={handleChange}
                         classes={"rounded-t-md"}
                         placeholder={"Email address"}
                     />
@@ -21,6 +48,8 @@ export default function Form() {
                         type="password"
                         autoComplete="current-password"
                         required
+                        onChange={handleChange}
+                        value={data.password}
                         classes={"rounded-b-md"}
                         placeholder={"Password"}
                     />
