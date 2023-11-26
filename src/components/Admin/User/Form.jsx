@@ -12,7 +12,7 @@ export default function Form() {
                         id="email-address"
                         name="email"
                         type="email"
-                        autocomplete="email"
+                        autoComplete="email"
                         required
                         placeholder="Email address"
                     />
@@ -22,7 +22,7 @@ export default function Form() {
                         id="password"
                         name="password"
                         type="password"
-                        autocomplete="current-password"
+                        autoComplete="current-password"
                         required
                         placeholder="Password"
                     />

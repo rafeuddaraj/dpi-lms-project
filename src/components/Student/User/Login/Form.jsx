@@ -10,7 +10,7 @@ export default function Form() {
                         labelId={"email-address"}
                         name="email"
                         type="email"
-                        autocomplete="email"
+                        autoComplete="email"
                         required
                         classes={"rounded-t-md"}
                         placeholder={"Email address"}
@@ -19,7 +19,7 @@ export default function Form() {
                         labelId={"password"}
                         name="password"
                         type="password"
-                        autocomplete="current-password"
+                        autoComplete="current-password"
                         required
                         classes={"rounded-b-md"}
                         placeholder={"Password"}
