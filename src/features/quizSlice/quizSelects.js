@@ -1,0 +1,1 @@
+export const quizSelect = state => state.quizzes

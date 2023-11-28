@@ -46,16 +46,6 @@ export default function App() {
                     }
                 />
                 <Route
-                    path="/quiz/:id"
-                    element={
-                        <PrivateRoute>
-                            <Layout>
-                                <QuizPage />
-                            </Layout>
-                        </PrivateRoute>
-                    }
-                />
-                <Route
                     path="/course/:id"
                     element={
                         <PrivateRoute>
