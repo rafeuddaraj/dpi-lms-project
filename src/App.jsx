@@ -2,7 +2,6 @@ import Course from "./pages/Student/Course";
 import LeaderBoardPage from "./pages/Student/LeaderBoardPage";
 import LoginPage from "./pages/Student/LoginPage";
 import RegistrationPage from "./pages/Student/RegistrationPage";
-import QuizPage from "./pages/Student/QuizPage";
 import Layout from "./components/Layout";
 // Admin
 import AdminLogin from "./pages/Admin/LoginPage";

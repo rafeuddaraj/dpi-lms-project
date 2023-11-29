@@ -3,6 +3,9 @@ import { userLoggedIn } from "./authSlice";
 
 export const authApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
+        getUsers:builder.query({
+            query:()=>'/users'
+        }),
         adminLogin: builder.mutation({
             query: (data) => ({
                 url: '/login',

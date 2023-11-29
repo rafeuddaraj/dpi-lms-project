@@ -2,6 +2,9 @@ import { apiSlice } from "../apiSlice/apiSlice";
 
 export const quizMarkApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
+        getQuizzesMarks: builder.query({
+            query: () => `/quizMark?_limit=20`
+        }),
         getQuizMark: builder.query({
             query: ({ id, studentId }) => `/quizMark?student_id=${studentId}&video_id=${id}`
         }),
@@ -17,4 +20,4 @@ export const quizMarkApi = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetQuizMarkQuery, useSubmitQuizMutation } = quizMarkApi
+export const { useGetQuizMarkQuery, useSubmitQuizMutation,useGetQuizzesMarksQuery } = quizMarkApi
