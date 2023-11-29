@@ -35,10 +35,7 @@ export default function Assignment({ showModal, handleModal, assignment }) {
             status: "pending",
         };
         submitAssignment(data)
-            .unwrap()
-            .then(() => {
-                navigate("/leaderboard");
-            });
+        handleModal()
     };
     return (
         <>

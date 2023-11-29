@@ -13,7 +13,22 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
                 url: `/assignmentMark`,
                 method: "POST",
                 body: data
-            })
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                const pathResult1 = dispatch(apiSlice.util.updateQueryData('getAssignmentMark', { studentId: arg.student_id, id: arg.video_id }, draft => {
+                    draft.push(arg)
+                }))
+                const pathResult2 = dispatch(apiSlice.util.updateQueryData('getAssignmentsMarks', undefined, draft => {
+                    draft.push(arg)
+                }))
+
+                try {
+                    await queryFulfilled
+                } catch {
+                    pathResult1.undo()
+                    pathResult2.undo()
+                }
+            }
         })
     })
 })
