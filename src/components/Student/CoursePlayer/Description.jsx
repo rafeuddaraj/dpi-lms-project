@@ -1,8 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useGetAssignmentQuery } from "../../../features/assignmentSlice/assignmentApi";
-import { quizApi, useGetQuizQuery } from "../../../features/quizSlice/quizApi";
+import { useGetQuizQuery } from "../../../features/quizSlice/quizApi";
 import { useGetQuizMarkQuery } from "../../../features/quizMarkSlice/quizMarkApi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { authSelect } from "../../../features/auth/authSelects";
 import { useEffect, useState } from "react";
 import { useGetAssignmentMarkQuery } from "../../../features/assignmentMarkSlice/assignmentMarkApi";
@@ -21,7 +20,6 @@ export default function Description({ video }) {
     const { data: quizzes, isSuccess: isQuizzesSuccess } = useGetQuizQuery(id, {
         skip: hasQuiz,
     });
-    const navigate = useNavigate();
     const { user } = useSelector(authSelect);
     const { data: quizMark, isSuccess: isQuizMarkSuccess } =
         useGetQuizMarkQuery({
