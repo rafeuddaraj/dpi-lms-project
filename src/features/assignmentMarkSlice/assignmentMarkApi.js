@@ -29,6 +29,25 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
                     pathResult2.undo()
                 }
             }
+        }),
+        submitAssignmentMark: builder.mutation({
+            query: ({ id, data }) => ({
+                url: `/assignmentMark/${id}`,
+                method: "PATCH",
+                body: data
+
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                const pathResult = dispatch(assignmentMarkApi.util.updateQueryData('getAssignmentsMarks', undefined, draft => {
+                    const index = draft.findIndex(arg.id)
+                    draft[index] = arg.data
+                }))
+                try {
+                    await queryFulfilled
+                } catch {
+                    pathResult.undo()
+                }
+            }
         })
     })
 })

@@ -1,19 +1,22 @@
-import { useState } from "react";
-import VideoEditModal from "./VideoEditModal";
+import { useDeleteVideoMutation } from "../../../features/videoSlice/videoApi";
+import { useDispatch } from "react-redux";
+import { setVideoId } from "../../../features/videoSlice/videoSlice";
 
-export default function VideoItem() {
-    const [showModal, setModal] = useState(false);
-    const handleModal = ()=>setModal(prev=>!prev)
+export default function VideoItem({ video, handleModal }) {
+    const { id, title, description } = video || {};
+    const [deleteVideo, { isLoading }] = useDeleteVideoMutation();
+    const dispatch = useDispatch();
     return (
         <>
             <tr>
-                <td className="table-td">
-                    Lesson 4 - Explicit &amp; Union Types - TypeScript Bangla (
-                    বাংলা ) Tutorial Series
+                <td className="table-td">{title}</td>
+                <td className="table-td" style={{textWrap:'wrap'}}>
+                    {description.split(" ").slice(0, 15).join(" ") + "...."}
                 </td>
-                <td className="table-td">This is the 4th video of this...</td>
                 <td className="table-td flex gap-x-2">
                     <svg
+                        onClick={() => deleteVideo(id)}
+                        disabled={isLoading}
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
@@ -26,7 +29,10 @@ export default function VideoItem() {
                         />
                     </svg>
                     <svg
-                        onClick={handleModal}
+                        onClick={() => {
+                            dispatch(setVideoId(id));
+                            handleModal();
+                        }}
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
@@ -39,7 +45,6 @@ export default function VideoItem() {
                         />
                     </svg>
                 </td>
-                <VideoEditModal handleModal={handleModal} showModal={showModal}/>
             </tr>
         </>
     );
