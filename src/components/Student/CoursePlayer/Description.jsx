@@ -86,7 +86,7 @@ export default function Description({ video }) {
                     {assignmentMark?.length !== 0 &&
                         isAssignmentMarkSuccess && (
                             <h2 className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm">
-                                {`আপনার অ্যাসাইমেন্ট মার্ক ${assignmentMark[0]?.mark}`}
+                                {assignmentMark[0]?.status === 'published' ? (`আপনার অ্যাসাইমেন্ট মার্ক ${assignmentMark[0]?.mark}`) : ('অনুগ্রহ করে অপেক্ষা করুন') }
                             </h2>
                         )}
                     {assignmentMark?.length === 0 &&
@@ -117,6 +117,7 @@ export default function Description({ video }) {
                 {showQuiz && <Quiz />}
                 {showAssignment && (
                     <Assignment
+                        assignment={assignment[0]}
                         handleModal={handleModal}
                         showModal={showModal}
                     />

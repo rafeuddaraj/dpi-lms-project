@@ -1,4 +1,45 @@
-export default function Assignment({ showModal, handleModal }) {
+import { useState } from "react";
+import { useSubmitAssignmentMutation } from "../../../features/assignmentMarkSlice/assignmentMarkApi";
+import { useSelector } from "react-redux";
+import { authSelect } from "../../../features/auth/authSelects";
+import { useNavigate } from "react-router-dom";
+
+export default function Assignment({ showModal, handleModal, assignment }) {
+    const [submitAssignment] = useSubmitAssignmentMutation();
+    const [input, setInput] = useState({ repo_link: "" });
+    const { user } = useSelector(authSelect);
+    const { id: userId, name } = user || {};
+    const navigate = useNavigate();
+    const {
+        title,
+        id: assignment_id,
+        video_id,
+        video_title,
+        totalMark,
+    } = assignment || {};
+
+    const handleInput = (e) => {
+        setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
+    const handleSubmitAssignment = (e) => {
+        e.preventDefault();
+        const data = {
+            student_id: userId,
+            student_name: name,
+            title,
+            assignment_id,
+            video_id,
+            video_title,
+            totalMark,
+            mark: 0,
+            status: "pending",
+        };
+        submitAssignment(data)
+            .unwrap()
+            .then(() => {
+                navigate("/leaderboard");
+            });
+    };
     return (
         <>
             <div
@@ -43,7 +84,10 @@ export default function Assignment({ showModal, handleModal }) {
                         </div>
                         {/* <!-- Modal body --> */}
                         <div className="p-4 md:p-5">
-                            <form className="space-y-4" action="#">
+                            <form
+                                className="space-y-4"
+                                action="#"
+                                onSubmit={handleSubmitAssignment}>
                                 <div>
                                     <label
                                         htmlFor="repoLink"
@@ -53,7 +97,9 @@ export default function Assignment({ showModal, handleModal }) {
                                     <input
                                         type="text"
                                         name="repo_link"
+                                        value={input.repo_link}
                                         id="repoLink"
+                                        onChange={handleInput}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                         required
                                     />
