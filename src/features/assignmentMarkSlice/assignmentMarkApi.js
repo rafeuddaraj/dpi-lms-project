@@ -3,7 +3,7 @@ import { apiSlice } from "../apiSlice/apiSlice";
 export const assignmentMarkApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getAssignmentsMarks: builder.query({
-            query: () => `/assignmentMark?_limit=20`
+            query: () => `/assignmentMark`
         }),
         getAssignmentMark: builder.query({
             query: ({ studentId, id }) => `/assignmentMark?assignment_id=${id}&student_id=${studentId}`
@@ -38,21 +38,22 @@ export const assignmentMarkApi = apiSlice.injectEndpoints({
 
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                const pathResult = dispatch(assignmentMarkApi.util.updateQueryData('getAssignmentsMarks', undefined, draft => {
-                    const index = draft.findIndex(arg.id)
-                    draft[index] = arg.data
-                }))
+
                 try {
-                    await queryFulfilled
+                    const assignmentMark = await queryFulfilled;
+                    dispatch(assignmentMarkApi.util.updateQueryData('getAssignmentsMarks', undefined, draft => {
+                        const index = draft.findIndex(assignment => Number(assignment.id) === arg.id)
+                        draft[index] = assignmentMark?.data
+                    }))
                 } catch {
-                    pathResult.undo()
+                    //
                 }
             }
         })
     })
 })
 
-export const { useGetAssignmentMarkQuery, useSubmitAssignmentMutation, useGetAssignmentsMarksQuery } = assignmentMarkApi
+export const { useGetAssignmentMarkQuery, useSubmitAssignmentMutation, useGetAssignmentsMarksQuery, useSubmitAssignmentMarkMutation } = assignmentMarkApi
 
 
 

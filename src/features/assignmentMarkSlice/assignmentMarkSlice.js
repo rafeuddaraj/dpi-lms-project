@@ -1,17 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {}
+const initialState = {
+    userMark: '',
+    marksStatus: {}
+}
 
 const assignmentSlice = createSlice({
     initialState,
     name: 'assignmentMark',
     reducers: {
         userMarkAdd: (state, action) => {
-            
-            return action.payload
+            state.userMark = action.payload
+        },
+        addMarksStatus: (state, action) => {
+            state.marksStatus = action.payload
         }
     }
 })
 
 export default assignmentSlice.reducer
-export const { userMarkAdd } = assignmentSlice.actions
+export const { userMarkAdd, addMarksStatus } = assignmentSlice.actions
