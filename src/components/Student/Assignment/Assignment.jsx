@@ -3,6 +3,7 @@ import { useSubmitAssignmentMutation } from "../../../features/assignmentMarkSli
 import { useSelector } from "react-redux";
 import { authSelect } from "../../../features/auth/authSelects";
 import { useNavigate } from "react-router-dom";
+import moment from "moment/moment";
 
 export default function Assignment({ showModal, handleModal, assignment }) {
     const [submitAssignment] = useSubmitAssignmentMutation();
@@ -33,9 +34,10 @@ export default function Assignment({ showModal, handleModal, assignment }) {
             totalMark,
             mark: 0,
             status: "pending",
+            createdAt: moment().format(),
         };
-        submitAssignment(data)
-        handleModal()
+        submitAssignment(data);
+        handleModal();
     };
     return (
         <>

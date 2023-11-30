@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetQuizQuery } from "../../../features/quizSlice/quizApi";
 import QuizItem from "./QuizItem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { size } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { getQuestions } from "../../../features/quizSlice/quizSlice";
@@ -14,6 +14,7 @@ import { useSubmitQuizMutation } from "../../../features/quizMarkSlice/quizMarkA
 export default function Quiz() {
     const { id } = useParams();
     const { data: quizzesFormQuery, isSuccess } = useGetQuizQuery(id);
+    
     const quizzes = useSelector(quizSelect);
     const { user } = useSelector(authSelect);
     const { name, id: userId } = user || {};

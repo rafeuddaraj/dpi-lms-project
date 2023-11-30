@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useGetAssignmentMarkQuery } from "../../../features/assignmentMarkSlice/assignmentMarkApi";
 import Quiz from "../Quiz/Quiz";
 import Assignment from "../Assignment/Assignment";
+import { size } from "lodash";
 
 export default function Description({ video }) {
     const { title, date, description, id } = video || {};
@@ -69,7 +70,9 @@ export default function Description({ video }) {
             }
         });
     };
-
+    // console.log('quiz=>',quizzes);
+    // console.log('mark=>',quizMark);
+    // console.log(size(arr));
     return (
         <>
             <div>
@@ -84,18 +87,25 @@ export default function Description({ video }) {
                     {assignmentMark?.length !== 0 &&
                         isAssignmentMarkSuccess && (
                             <h2 className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm">
-                                {assignmentMark[0]?.status === 'published' ? (`আপনার অ্যাসাইমেন্ট মার্ক ${assignmentMark[0]?.mark}`) : ('অনুগ্রহ করে অপেক্ষা করুন') }
+                                {assignmentMark[0]?.status === "published"
+                                    ? `আপনার অ্যাসাইমেন্ট মার্ক ${assignmentMark[0]?.mark}`
+                                    : "আপনার অ্যাসাইনমেন্ট টি পেন্ডিংয়ে আছে"}
                             </h2>
                         )}
                     {assignmentMark?.length === 0 &&
                         isAssignmentSuccess &&
-                        assignment?.length > 0 && (
+                        assignment?.length !== 0 && (
                             <button
                                 onClick={handleAssignment}
                                 className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">
                                 এসাইনমেন্ট
                             </button>
                         )}
+                    {assignment?.id !== id && (
+                        <button className="px-3 font-bold py-1 border border-red text-red rounded-full text-sm hover:bg-red-300 hover:text-primary">
+                            এই ভিডিওর জন্য কোনো অ্যাসাইমেন্ট নেই।
+                        </button>
+                    )}
 
                     {quizMark?.length !== 0 && isQuizMarkSuccess && (
                         <h2 className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm">
@@ -104,18 +114,24 @@ export default function Description({ video }) {
                     )}
                     {quizMark?.length === 0 &&
                         isQuizzesSuccess &&
-                        quizzes?.length > 0 && (
+                        quizzes?.length !== 0 && (
                             <button
                                 onClick={handleQuiz}
                                 className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">
                                 কুইজে অংশগ্রহণ করুন
                             </button>
                         )}
+
+                    {size(quizzes) === 0 && size(quizMark) === 0 && (
+                        <button className="px-3 font-bold py-1 border border-red text-red rounded-full text-sm hover:bg-red-300 hover:text-primary">
+                            এই ভিডিওর জন্য কোনো কুইজ নেই।
+                        </button>
+                    )}
                 </div>
-                {showQuiz && <Quiz />}
+                {showQuiz && <Quiz quizzes={quizzes} />}
                 {showAssignment && (
                     <Assignment
-                        assignment={assignment[0]}
+                        assignment={assignment}
                         handleModal={handleModal}
                         showModal={showModal}
                     />
