@@ -1,19 +1,22 @@
-import { useState } from "react";
-import AssignmentEditModal from "./AssignmentEditModal";
+import { useDispatch } from "react-redux";
+import { useDeleteAssignmentMutation } from "../../../features/assignmentSlice/assignmentApi";
+import { setAssignmentId } from "../../../features/assignmentSlice/assignmentsSlice";
 
-export default function AssignmentList() {
-    const [showModal, setShowModal] = useState(false);
-    const handleModal = () => setShowModal((prev) => !prev);
+export default function AssignmentList({ handleModal, assignment }) {
+    const { title, video_title, totalMark, id } = assignment || {};
+    const dispatch = useDispatch();
+    const [deleteAssignment, { isLoading: isDeleteAssignmentLoading }] =
+        useDeleteAssignmentMutation();
     return (
         <>
             <tr>
-                <td className="table-td">Assignment 1 - Scoreboard Application</td>
-                <td className="table-td">
-                    JavaScript Bangla Tutorial | JS AJAX | XMLHttp
-                </td>
-                <td className="table-td">100</td>
+                <td className="table-td">{title}</td>
+                <td className="table-td">{video_title}</td>
+                <td className="table-td">{totalMark}</td>
                 <td className="table-td flex gap-x-2">
                     <svg
+                        disabled={isDeleteAssignmentLoading}
+                        onClick={() => deleteAssignment(id)}
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
@@ -26,7 +29,10 @@ export default function AssignmentList() {
                         />
                     </svg>
                     <svg
-                        onClick={handleModal}
+                        onClick={() => {
+                            handleModal();
+                            dispatch(setAssignmentId(id));
+                        }}
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
@@ -39,10 +45,6 @@ export default function AssignmentList() {
                         />
                     </svg>
                 </td>
-                <AssignmentEditModal
-                    handleModal={handleModal}
-                    showModal={showModal}
-                />
             </tr>
         </>
     );

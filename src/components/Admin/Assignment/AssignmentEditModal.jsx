@@ -1,4 +1,54 @@
+import { useEffect, useState } from "react";
+import { useGetVideosQuery } from "../../../features/videoSlice/videoApi";
+import {
+    useAddAssignmentMutation,
+    useGetAssignmentQuery,
+    useUpdateAssignmentMutation,
+} from "../../../features/assignmentSlice/assignmentApi";
+import { useSelector } from "react-redux";
+const initialInput = {
+    video_title: "",
+    video_id: "",
+    totalMark: "",
+    title: "",
+};
 export default function AssignmentEditModal({ showModal, handleModal }) {
+    const { data: videos, isSuccess: isVideoSuccess } = useGetVideosQuery();
+    const [updateAssignment, { isLoading }] = useUpdateAssignmentMutation();
+    const {assignmentId} = useSelector(state=>state.assignments)
+    const { data: assignment, isSuccess: isAssignmentSuccess } =
+        useGetAssignmentQuery(1);
+
+    const [input, setInput] = useState(initialInput);
+
+    useEffect(() => {
+        if (isAssignmentSuccess) {
+            setInput({ ...assignment });
+        }
+    }, [isAssignmentSuccess, assignment]);
+
+
+    const handleInput = (e, video) => {
+        if (e.target.name === "video_title") {
+            setInput((prev) => ({
+                ...prev,
+                video_id: video.id,
+                video_title: video.title,
+            }));
+        } else {
+            setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        updateAssignment({data:input, id:assignmentId})
+            .unwrap()
+            .then(() => {
+                handleModal();
+            });
+    };
+
     return (
         <>
             <div
@@ -15,7 +65,7 @@ export default function AssignmentEditModal({ showModal, handleModal }) {
                         {/* <!-- Modal header --> */}
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                                Assignment Edit
+                                Edit Add
                             </h3>
                             <button
                                 onClick={handleModal}
@@ -41,7 +91,10 @@ export default function AssignmentEditModal({ showModal, handleModal }) {
                         </div>
                         {/* <!-- Modal body --> */}
                         <div className="p-4 md:p-5">
-                            <form className="space-y-4" action="#">
+                            <form
+                                className="space-y-4"
+                                action="#"
+                                onSubmit={handleSubmit}>
                                 <div>
                                     <label
                                         htmlFor="title"
@@ -51,7 +104,9 @@ export default function AssignmentEditModal({ showModal, handleModal }) {
                                     <input
                                         type="text"
                                         name="title"
+                                        onChange={handleInput}
                                         id="title"
+                                        value={input.title}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                         required
                                     />
@@ -62,13 +117,30 @@ export default function AssignmentEditModal({ showModal, handleModal }) {
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                         Video Title
                                     </label>
-                                    <select name="video_title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" id="video_title">
+                                    <select
+                                        value={input.video_id}
+                                        name="video_title"
+                                        onChange={(e) => {
+                                            const video = videos.find(
+                                                (video) =>
+                                                    video.id ===
+                                                    Number(e.target.value)
+                                            );
+                                            handleInput(e, video);
+                                        }}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        id="video_title">
                                         <option hidden value={""}>
                                             Select Video
                                         </option>
-                                        <option value={""}>Video 1</option>
-                                        <option value={""}>Video 2</option>
-                                        <option value={""}>Video 3</option>
+                                        {videos?.length > 0 &&
+                                            videos.map((video) => (
+                                                <option
+                                                    key={video.id}
+                                                    value={video.id}>
+                                                    {video.title}
+                                                </option>
+                                            ))}
                                     </select>
                                 </div>
                                 <div>
@@ -80,6 +152,8 @@ export default function AssignmentEditModal({ showModal, handleModal }) {
                                     <input
                                         name="totalMark"
                                         id="mark"
+                                        value={input.totalMark}
+                                        onChange={handleInput}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                         required
                                     />

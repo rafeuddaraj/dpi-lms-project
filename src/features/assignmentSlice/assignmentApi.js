@@ -6,7 +6,7 @@ export const assignmentApi = apiSlice.injectEndpoints({
             query: () => `/assignments`
         }),
         getAssignment: builder.query({
-            query: (id) => `/assignments?video_id_like=${id}`
+            query: (id) => `/assignments/${id}`
         }),
         updateAssignment: builder.mutation({
             query: ({ id, data }) => ({
