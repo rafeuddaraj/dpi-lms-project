@@ -70,7 +70,7 @@ export const assignmentApi = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetAssignmentQuery } = assignmentApi
+export const { useGetAssignmentQuery, useGetAssignmentsQuery, useDeleteAssignmentMutation, useAddAssignmentMutation, useUpdateAssignmentMutation } = assignmentApi
 
 
 

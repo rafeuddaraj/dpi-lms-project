@@ -1,20 +1,29 @@
-import { useState } from "react";
-import QuizEditModal from "./QuizEditModal";
+import { useDispatch } from "react-redux";
+import { setQuizId } from "../../../features/quizMarkSlice/quizSlice";
+import { useDeleteVideoMutation } from "../../../features/videoSlice/videoApi";
 
-export default function QuizItem() {
-    const [showModal, setShowModal] = useState(false);
-    const handleModal = () => setShowModal((prev) => !prev);
+export default function QuizItem({ handleModal, quiz, noq }) {
+    const { question, video_title, id } = quiz || {};
+    const [deleteQuiz, { isLoading }] = useDeleteVideoMutation();
+    const dispatch = useDispatch()
+
+    const handleDelete = () => {
+        deleteQuiz(id);
+    };
+
     return (
         <>
             <tr>
                 <td className="table-td">
-                    Quiz 1 - JavaScript Interview Questions
+                    Quiz {noq + 1} - {video_title}
                 </td>
-                <td className="table-td">
-                    Debounce Function in JavaScript - JavaScript Job...
+                <td style={{ textWrap: "wrap" }} className="table-td">
+                    {question}
                 </td>
                 <td className="table-td flex gap-x-2 justify-center">
                     <svg
+                        onClick={handleDelete}
+                        disabled={isLoading}
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
@@ -27,7 +36,10 @@ export default function QuizItem() {
                         />
                     </svg>
                     <svg
-                        onClick={handleModal}
+                        onClick={()=>{
+                            dispatch(setQuizId(id))
+                            handleModal()
+                        }}
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
@@ -41,7 +53,6 @@ export default function QuizItem() {
                     </svg>
                 </td>
             </tr>
-            <QuizEditModal handleModal={handleModal} showModal={showModal} />
         </>
     );
 }

@@ -6,7 +6,7 @@ export const quizApi = apiSlice.injectEndpoints({
             query: () => `/quizzes`
         }),
         getQuiz: builder.query({
-            query: (id) => `/quizzes?video_id_like=${id}`
+            query: (id) => `/quizzes/${id}`
         }),
         updateQuiz: builder.mutation({
             query: ({ id, data }) => ({
@@ -15,7 +15,7 @@ export const quizApi = apiSlice.injectEndpoints({
                 body: data
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                const pathResult = dispatch(quizApi.util.updateQueryData('getVideos', undefined, draft => {
+                const pathResult = dispatch(quizApi.util.updateQueryData('getQuizzes', undefined, draft => {
                     const videoIndex = draft.findIndex(quiz => quiz.id === arg.id)
                     draft[videoIndex] = arg.data
                 }))
