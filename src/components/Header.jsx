@@ -3,8 +3,11 @@ import logo from "../assets/image/learningportal.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoggedOut } from "../features/auth/authSlice";
 import { authSelect } from "../features/auth/authSelects";
+import { useState } from "react";
+import Support from "./Student/Support/Support";
 
 export default function Header() {
+    const [supportModal, setSupportModal] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector(authSelect);
@@ -16,6 +19,9 @@ export default function Header() {
         }
         navigate("/");
     };
+
+    const handleSupportModal = () => setSupportModal((prev) => !prev);
+
     return (
         <>
             <nav className="shadow-md">
@@ -24,9 +30,17 @@ export default function Header() {
                         <img className="h-10" src={logo} />
                         {/* Altrazen Schools */}
                     </Link>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-12">
                         {user?.role === "student" && (
-                            <Link to={"/leaderboard"}>Leaderboard</Link>
+                            <>
+                                <h2
+                                    className="text-bold"
+                                    onClick={handleSupportModal}
+                                    style={{ cursor: "pointer" }}>
+                                    সাপোর্ট
+                                </h2>
+                                <Link to={"/leaderboard"}>Leaderboard</Link>
+                            </>
                         )}
                         <h2 className="font-bold">{user?.name}</h2>
                         <button
@@ -50,6 +64,7 @@ export default function Header() {
                     </div>
                 </div>
             </nav>
+            <Support showModal={supportModal} handleModal={handleSupportModal}/>
         </>
     );
 }
