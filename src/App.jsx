@@ -17,7 +17,7 @@ import useAuthCheck from "./hooks/useAuthCheck";
 import PrivateRoute from "./components/Student/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import AdminRoute from "./components/Admin/AdminRoute";
-import useAdminAuthCheck from "./hooks/useAdminAuthCHeck";
+import useAdminAuthCheck from "./hooks/useAdminAuthCheck";
 import NotFound from "./components/ui/NotFound";
 
 export default function App() {
