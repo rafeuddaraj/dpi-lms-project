@@ -8,7 +8,6 @@ const quizSlice = createSlice({
     initialState,
     reducers: {
         getQuestions: (_, action) => {
-            console.log(action.payload);
             const quizzes = action.payload.map(quiz => ({ ...quiz, options: quiz.options.map(option => ({ ...option, checked: false })) }))
             return quizzes
         },

@@ -1,14 +1,21 @@
-export default function calculateQuizMark(quizzes = []) {
-    const mark = 5
-    let result = 0
-    quizzes.forEach(quiz => {
-        quiz.options.forEach(option => {
-            if (option.isCorrect && option.checked === true) {
-                result += mark
-            }
-        })
-    })
-    return result
+export default function calculateQuizMark(quizData = []) {
+  let totalMarks = 0;
+
+  quizData.forEach(question => {
+    let isPerfectlyCorrect = true;
+
+    question.options.forEach(option => {
+      if (option.isCorrect !== option.checked) {
+        isPerfectlyCorrect = false;
+      }
+    });
+
+    if (isPerfectlyCorrect) {
+      totalMarks += 5;
+    }
+  });
+
+  return totalMarks;
 }
 
 

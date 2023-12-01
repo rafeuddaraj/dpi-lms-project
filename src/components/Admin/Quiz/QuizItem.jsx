@@ -1,10 +1,11 @@
 import { useDispatch } from "react-redux";
 import { setQuizId } from "../../../features/quizMarkSlice/quizSlice";
-import { useDeleteVideoMutation } from "../../../features/videoSlice/videoApi";
+import { useDeleteQuizMutation } from "../../../features/quizSlice/quizApi";
+
 
 export default function QuizItem({ handleModal, quiz, noq }) {
     const { question, video_title, id } = quiz || {};
-    const [deleteQuiz, { isLoading }] = useDeleteVideoMutation();
+    const [deleteQuiz, { isLoading }] = useDeleteQuizMutation();
     const dispatch = useDispatch()
 
     const handleDelete = () => {

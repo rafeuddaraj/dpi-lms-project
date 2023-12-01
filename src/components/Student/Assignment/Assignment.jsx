@@ -28,6 +28,7 @@ export default function Assignment({ showModal, handleModal, assignment }) {
             student_id: userId,
             student_name: name,
             title,
+            repo_link:input.repo_link,
             assignment_id,
             video_id,
             video_title,

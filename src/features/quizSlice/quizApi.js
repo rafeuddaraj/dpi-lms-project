@@ -50,7 +50,7 @@ export const quizApi = apiSlice.injectEndpoints({
 
         }),
 
-        deleteVideo: builder.mutation({
+        deleteQuiz: builder.mutation({
             query: (id) => ({
                 url: `/quizzes/${id}`,
                 method: "DELETE"
@@ -58,6 +58,7 @@ export const quizApi = apiSlice.injectEndpoints({
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 const pathResult = dispatch(quizApi.util.updateQueryData('getQuizzes', undefined, draft => {
                     const index = draft.findIndex(quiz => quiz.id === arg)
+                    console.log(JSON.stringify(draft));
                     draft.splice(index, 1)
                 }))
                 try {
@@ -71,4 +72,4 @@ export const quizApi = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetQuizQuery, useAddQuizMutation, useDeleteVideoMutation, useGetQuizzesQuery, useUpdateQuizMutation } = quizApi
+export const { useGetQuizQuery, useAddQuizMutation, useDeleteQuizMutation, useGetQuizzesQuery, useUpdateQuizMutation } = quizApi

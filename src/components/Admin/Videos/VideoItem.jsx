@@ -1,10 +1,12 @@
-import { useDeleteVideoMutation } from "../../../features/videoSlice/videoApi";
+
 import { useDispatch } from "react-redux";
 import { setVideoId } from "../../../features/videoSlice/videoSlice";
+import { useDeleteVideoMutation } from "../../../features/videoSlice/videoApi";
+
 
 export default function VideoItem({ video, handleModal }) {
     const { id, title, description } = video || {};
-    const [deleteVideo, { isLoading }] = useDeleteVideoMutation();
+    const [deleteVideo, { isLoading }] = useDeleteVideoMutation()
     const dispatch = useDispatch();
     return (
         <>
@@ -15,7 +17,10 @@ export default function VideoItem({ video, handleModal }) {
                 </td>
                 <td className="table-td flex gap-x-2">
                     <svg
-                        onClick={() => deleteVideo(id)}
+                        onClick={() => {
+                            console.log(id);
+                            deleteVideo(id)
+                        }}
                         disabled={isLoading}
                         fill="none"
                         viewBox="0 0 24 24"

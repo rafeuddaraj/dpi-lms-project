@@ -44,6 +44,7 @@ export default function Quiz() {
                 totalMark: result,
                 mark: 5,
             };
+            console.log(quizResultObject);
             submitQuiz(quizResultObject)
                 .unwrap()
                 .then(() => {

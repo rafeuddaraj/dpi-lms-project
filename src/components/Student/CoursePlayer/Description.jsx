@@ -1,7 +1,7 @@
-import { useGetAssignmentQuery } from "../../../features/assignmentSlice/assignmentApi";
+import { assignmentApi } from "../../../features/assignmentSlice/assignmentApi";
 import { useGetQuizQuery } from "../../../features/quizSlice/quizApi";
 import { useGetQuizMarkQuery } from "../../../features/quizMarkSlice/quizMarkApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authSelect } from "../../../features/auth/authSelects";
 import { useEffect, useState } from "react";
 import { useGetAssignmentMarkQuery } from "../../../features/assignmentMarkSlice/assignmentMarkApi";
@@ -10,14 +10,13 @@ import Assignment from "../Assignment/Assignment";
 import { size } from "lodash";
 
 export default function Description({ video }) {
+    const dispatch = useDispatch();
     const { title, date, description, id } = video || {};
     const [hasQuiz, setHasQuiz] = useState(true);
-    const [hasAssignment, setHasAssignment] = useState(true);
     const [showQuiz, setShowQuiz] = useState(false);
     const [showAssignment, setShowAssignment] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const { data: assignment, isSuccess: isAssignmentSuccess } =
-        useGetAssignmentQuery(id, { skip: hasAssignment });
+    const [assignment, setAssignment] = useState({});
     const { data: quizzes, isSuccess: isQuizzesSuccess } = useGetQuizQuery(id, {
         skip: hasQuiz,
     });
@@ -41,9 +40,14 @@ export default function Description({ video }) {
 
     useEffect(() => {
         if (assignmentMark?.length === 0) {
-            setHasAssignment(false);
+            (async () => {
+                const data = await dispatch(
+                    assignmentApi.endpoints.getAssignment.initiate(id)
+                );
+                setAssignment(data?.data);
+            })();
         }
-    }, [assignmentMark]);
+    }, [assignmentMark, dispatch, id]);
 
     const handleModal = () => {
         setShowModal((prev) => !prev);
@@ -70,9 +74,6 @@ export default function Description({ video }) {
             }
         });
     };
-    // console.log('quiz=>',quizzes);
-    // console.log('mark=>',quizMark);
-    // console.log(size(arr));
     return (
         <>
             <div>
@@ -87,21 +88,21 @@ export default function Description({ video }) {
                     {assignmentMark?.length !== 0 &&
                         isAssignmentMarkSuccess && (
                             <h2 className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm">
-                                {assignmentMark[0]?.status === "published"
+                                {assignmentMark[0]?.status === "published" &&
+                                assignmentMark[0]?.mark !== 0
                                     ? `আপনার অ্যাসাইমেন্ট মার্ক ${assignmentMark[0]?.mark}`
                                     : "আপনার অ্যাসাইনমেন্ট টি পেন্ডিংয়ে আছে"}
                             </h2>
                         )}
                     {assignmentMark?.length === 0 &&
-                        isAssignmentSuccess &&
-                        assignment?.length !== 0 && (
+                        size(assignment) !== 0 && (
                             <button
                                 onClick={handleAssignment}
                                 className="px-3 font-bold py-1 border border-cyan text-cyan rounded-full text-sm hover:bg-cyan hover:text-primary">
                                 এসাইনমেন্ট
                             </button>
                         )}
-                    {assignment?.id !== id && (
+                    {size(assignment) === 0 && size(assignmentMark) === 0 && (
                         <button className="px-3 font-bold py-1 border border-red text-red rounded-full text-sm hover:bg-red-300 hover:text-primary">
                             এই ভিডিওর জন্য কোনো অ্যাসাইমেন্ট নেই।
                         </button>

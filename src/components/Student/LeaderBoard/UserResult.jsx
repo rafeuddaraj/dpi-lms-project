@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
 
 export default function UserResult() {
-    // const mark = useSelector((state) => state.userMark);
-    const userMark = useSelector(state=>state.userMark)
+    const {userMark} = useSelector(state=>state.userMark)
 
     const { assignmentMark, name, quizMark, rank, totalMark } = userMark || {}
     return (

@@ -71,4 +71,4 @@ export const VideoSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const { useGetVideoQuery, useGetVideosQuery, useDeleteVideoMutation, useUpdateVideoMutation, useAddVideoMutation } = VideoSlice
+export const { useGetVideoQuery, useGetVideosQuery, useUpdateVideoMutation, useAddVideoMutation, useDeleteVideoMutation} = VideoSlice
