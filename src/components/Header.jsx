@@ -21,8 +21,8 @@ export default function Header() {
             <nav className="shadow-md">
                 <div className="max-w-7xl px-5 lg:px-0 mx-auto flex justify-between py-3">
                     <Link to={"/course/1"}>
-                        {/* <img className="h-10" src={logo} /> */}
-                        Altrazen Schools
+                        <img className="h-10" src={logo} />
+                        {/* Altrazen Schools */}
                     </Link>
                     <div className="flex items-center gap-3">
                         {user?.role === "student" && (
