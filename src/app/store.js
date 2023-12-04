@@ -6,6 +6,7 @@ import userMarkReducer from '../features/assignmentMarkSlice/assignmentMarkSlice
 import videoReducer from '../features/videoSlice/videoSlice'
 import quizMarkReducer from '../features/quizMarkSlice/quizSlice'
 import assignmentsReducer from '../features/assignmentSlice/assignmentsSlice'
+import supportReducer from '../features/supports/supportSlice'
 
 export const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
         userMark: userMarkReducer,
         videos: videoReducer,
         quizzesMarks: quizMarkReducer,
-        assignments: assignmentsReducer 
+        assignments: assignmentsReducer ,
+        supports: supportReducer ,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware),
     devTools: import.meta.env.NODE_ENV !== 'production'

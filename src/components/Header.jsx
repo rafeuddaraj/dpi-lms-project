@@ -64,7 +64,12 @@ export default function Header() {
                     </div>
                 </div>
             </nav>
-            <Support showModal={supportModal} handleModal={handleSupportModal}/>
+            {supportModal && (
+                <Support
+                    showModal={supportModal}
+                    handleModal={handleSupportModal}
+                />
+            )}
         </>
     );
 }

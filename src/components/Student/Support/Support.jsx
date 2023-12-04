@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { useGetSupportsQuery } from "../../../features/supports/supportsApi";
+import moment from "moment";
 
 export default function Support({ showModal, handleModal }) {
+    const {data:supports} = useGetSupportsQuery()
     const [input, setInput] = useState("");
+    const [d, setD] = useState("");
     const [activeLink, setActiveLink] = useState(false);
     const [hasSupport, setHasSupport] = useState(false);
+    console.log(supports);
 
     const handleSubmit = () => {
         setActiveLink(true);
     };
-
     return (
         <>
             <div
@@ -53,6 +57,12 @@ export default function Support({ showModal, handleModal }) {
                         </div>
                         {/* <!-- Modal body --> */}
                         <div className="p-4 md:p-5">
+                            <input type="datetime-local"  value={d} onChange={(e)=>{
+                                setD(e.target.value)
+                                const time = moment(e.target.value)
+                                const neTime = time.add(2,'hours')
+                                console.log(neTime.format());
+                            }}/>
                             {hasSupport ? (
                                 <>
                                     {activeLink ? (

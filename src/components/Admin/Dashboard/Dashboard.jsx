@@ -70,6 +70,12 @@ export default function Dashboard() {
 
                         <p className="text-slate-200 mt-3 ">Assignment Mark</p>
                     </Link>
+                    <Link to={'/admin/support-session'} className="dashboard-item-card">
+                        
+                        <img src="../../../assets/image/support.png" alt="" />
+
+                        <p className="text-slate-200 mt-3 ">Support Session</p>
+                    </Link>
                 </div>
             </div>
         </>

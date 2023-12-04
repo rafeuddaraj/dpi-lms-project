@@ -19,6 +19,7 @@ import PublicRoute from "./components/PublicRoute";
 import AdminRoute from "./components/Admin/AdminRoute";
 import useAdminAuthCheck from "./hooks/useAdminAuthCheck";
 import NotFound from "./components/ui/NotFound";
+import SupportPage from "./pages/Admin/SupportPage";
 
 export default function App() {
     const authCheck = useAuthCheck();
@@ -109,6 +110,16 @@ export default function App() {
                         <AdminRoute>
                             <Layout>
                                 <AdminVideosPage />
+                            </Layout>
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin/support-session"
+                    element={
+                        <AdminRoute>
+                            <Layout>
+                                <SupportPage />
                             </Layout>
                         </AdminRoute>
                     }
