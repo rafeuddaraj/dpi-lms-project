@@ -10,6 +10,7 @@ export default function Form() {
         email: "",
         password: "",
         confirmPassword: "",
+        role:'student'
     });
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,7 +24,8 @@ export default function Form() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (data.confirmPassword === data.password) {
-            dispatch(authApi.endpoints.register.initiate(data)).then(() => {
+            const {confirmPassword,...userData} = data
+            dispatch(authApi.endpoints.register.initiate(userData)).then(() => {
                 navigate("/course/1");
             });
         }

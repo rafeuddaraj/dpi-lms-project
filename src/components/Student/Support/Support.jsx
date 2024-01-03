@@ -1,17 +1,91 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetSupportsQuery } from "../../../features/supports/supportsApi";
 import moment from "moment";
+import runningSupportSessionFind from "../../../utils/runningSupportSessionFind";
+import {
+    supportTicketApi,
+    useTicketBookMutation,
+    useTicketDeleteMutation,
+} from "../../../features/supportTicketSlice/supportTicketApi";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Support({ showModal, handleModal }) {
-    const {data:supports} = useGetSupportsQuery()
+    const { data: supports, isSuccess } = useGetSupportsQuery();
+    const { user } = useSelector((state) => state.auth);
+    const { id: studentId, name: studentName } = user || {};
+    const [support, setSupport] = useState({});
+    const { link } = support || {};
+    const [ticketData, setTicketData] = useState({});
+    const { id: ticketId, supportId, startTime, endTime } = ticketData || {};
     const [input, setInput] = useState("");
-    const [d, setD] = useState("");
     const [activeLink, setActiveLink] = useState(false);
     const [hasSupport, setHasSupport] = useState(false);
-    console.log(supports);
+    const dispatch = useDispatch();
+    const [ticketBook, { isLoading, isSuccess: isBookedTicket }] =
+        useTicketBookMutation();
 
-    const handleSubmit = () => {
-        setActiveLink(true);
+    const [deleteTicket] = useTicketDeleteMutation();
+
+    useEffect(() => {
+        if (isSuccess) {
+            const supportData = runningSupportSessionFind(supports);
+            if (supportData?.id) {
+                dispatch(
+                    supportTicketApi.endpoints.getTicket.initiate({
+                        supportId: supportData?.id,
+                        studentId,
+                    })
+                )
+                    ?.unwrap()
+                    ?.then((data) => {
+                        if (data[0]?.id) {
+                            setHasSupport(true);
+                            setActiveLink(true);
+                            setTicketData(data[0]);
+                        } else {
+                            setHasSupport(true);
+                            setActiveLink(false);
+                            setSupport(supportData);
+                        }
+                    });
+            } else {
+                setHasSupport(false);
+            }
+        }
+    }, [isSuccess, dispatch, supports, studentId]);
+
+    const handleInput = (e) => {
+        setInput(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const ticketData = {
+            studentId,
+            studentName,
+            startTime: support?.startTime,
+            endTime:support?.endTime,
+            teacher:support?.teacher,
+            link:support?.link,
+            supportId: support?.id,
+            message: input,
+        };
+        ticketBook(ticketData)
+            .unwrap()
+            .then((data) => {
+                setTicketData(data);
+                setActiveLink(true);
+            });
+    };
+    const handleLeave = () => {
+        console.log({ supportId, studentId, id: ticketId });
+        alert("লিভ নিলে পরবর্তীতে আবার সিরিয়াল নিতে হবে");
+        deleteTicket({ supportId, studentId, id: ticketId })
+            .unwrap()
+            .then(() => {
+                setActiveLink(false);
+                handleModal();
+            });
     };
     return (
         <>
@@ -57,42 +131,42 @@ export default function Support({ showModal, handleModal }) {
                         </div>
                         {/* <!-- Modal body --> */}
                         <div className="p-4 md:p-5">
-                            <input type="datetime-local"  value={d} onChange={(e)=>{
-                                setD(e.target.value)
-                                const time = moment(e.target.value)
-                                const neTime = time.add(2,'hours')
-                                console.log(neTime.format());
-                            }}/>
                             {hasSupport ? (
                                 <>
                                     {activeLink ? (
                                         <div>
+                                            <h1 className="text-black text-2xl text-center">
+                                                {moment(startTime).format(
+                                                    "HH:MM"
+                                                )}
+                                                -
+                                                {moment(endTime).format(
+                                                    "HH:MM"
+                                                )}
+                                            </h1>
                                             <h2 className="text-black text-center">
                                                 আপনার সিরিয়াল ২০ মিনিট পরে
                                             </h2>
                                             <div className=" mt-10 flex justify-between">
                                                 <a
-                                                    href="https://meet.google.com/phr-axrw-dpy"
+                                                    href={link}
                                                     target="_blank"
                                                     rel={"noreferrer"}
                                                     className="border border-cyan items-center px-4 py-1 rounded-full text-black text-sm transition-all hover:bg-cyan ">
                                                     জয়েন করুন
                                                 </a>
                                                 <button
-                                                    onClick={() => {
-                                                        alert(
-                                                            "লিভ নিলে পরবর্তীতে আবার সিরিয়াল নিতে হবে"
-                                                        );
-                                                        setActiveLink(false);
-                                                        handleModal();
-                                                    }}
+                                                    onClick={handleLeave}
                                                     className="border border-cyan items-center px-4 py-1 rounded-full text-black text-sm transition-all hover:bg-cyan ">
                                                     লিভ নিন
                                                 </button>
                                             </div>
                                         </div>
                                     ) : (
-                                        <form className="space-y-4" action="#">
+                                        <form
+                                            className="space-y-4"
+                                            action="#"
+                                            onSubmit={handleSubmit}>
                                             <div>
                                                 <label
                                                     htmlFor="question"
@@ -102,6 +176,8 @@ export default function Support({ showModal, handleModal }) {
                                                 <input
                                                     type="text"
                                                     name="question"
+                                                    value={input}
+                                                    onChange={handleInput}
                                                     id="question"
                                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                                     required
@@ -112,6 +188,7 @@ export default function Support({ showModal, handleModal }) {
                                                 style={{
                                                     background: "#34b5fd",
                                                 }}
+                                                disabled={isLoading}
                                                 type="submit"
                                                 className="w-full text-dark hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 Submit
