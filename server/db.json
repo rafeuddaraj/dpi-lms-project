@@ -1,0 +1,170 @@
+{
+  "users": [
+    {
+      "email": "admin@rafe.com",
+      "password": "$2a$10$/TDPCTU28mFzKnSsW2pHSu512mpMKxLf8eiPbcTFLSNL87tbZBp3W",
+      "role": "admin",
+      "name": "Admin",
+      "id": 1
+    },
+    {
+      "email": "saad.hasan@learnwithsumit.com",
+      "password": "$2a$10$4iJEmSkM1Dq6WMRb0SuJeeic1SEB9TrH3gw5IT441Adox/ZZXj2Ae",
+      "role": "student",
+      "name": "Saad Hasan",
+      "id": 2
+    },
+    {
+      "email": "akash.ahmed@learnwithsumit.com",
+      "password": "$2a$10$TNsYpL6ffKBrupNNvdJlleJlgIkp1C1xQJCbiv7HAl5Ggs.kucie2",
+      "role": "student",
+      "name": "Akash Ahmed",
+      "id": 3
+    },
+    {
+      "email": "md.salahuddin@learnwithsumit.com",
+      "password": "$2a$10$dcWjzIi4mLAERlWE4nfJW.1/mvC9FXqZU8A2V1rPlsqIrP3kWa8PG",
+      "role": "student",
+      "name": "Mohammad Salahuddin",
+      "id": 4
+    },
+    {
+      "email": "ferdous.shohag@learnwithsumit.com",
+      "password": "$2a$10$IZ6eXNauYSqMhl38Wc46texV2vjGZz.Zl66j7hrnW6ZDSDcMlPWeu",
+      "role": "student",
+      "name": "Ferdous",
+      "id": 5
+    },
+    {
+      "email": "riyadh.vai@learnwithsumit.com",
+      "password": "$2a$10$e4XPY48UpqmAj8teZ2je8.qd5AEk6hWm5PQwDoJsCsE91qlDPJx1G",
+      "role": "student",
+      "name": "Riyadh",
+      "id": 6
+    },
+    {
+      "email": "arif.almas@learnwithsumit.com",
+      "password": "$2a$10$NN4pXB4tBMw.ySrMDPMymepSGDdcvKzx/RjNCrdNTENOFVLWCWGOi",
+      "role": "student",
+      "name": "Arif",
+      "id": 7
+    },
+    {
+      "email": "rafe@uddaraj.com",
+      "password": "$2a$10$xWz8xdygl/rIySP6Vt/L3eTsez1siL3BOv0pEsZsTpSNaLJ3LmhTC",
+      "name": "Rafe Uddaraj",
+      "role": "student",
+      "id": 8
+    },
+    {
+      "email": "mbr@gmail.com",
+      "password": "$2a$10$hCYa/G2Ddxgr2kjytMaP9.skpUfvJqvLY7x5TZhgLqvOtHIisV5tq",
+      "name": "MR Twest",
+      "role": "student",
+      "id": 10
+    },
+    {
+      "email": "rafeuddaraj2@gmail.com",
+      "password": "$2a$10$ib.EQSpz7WOFEb8zn3DuKuGcXPj55ZkYpArcak9/FuKeczp0lTupy",
+      "name": "Test",
+      "role": "student",
+      "id": 11
+    },
+    {
+      "email": "fahim@gmail.com",
+      "password": "$2a$10$EOwTnL9dJOmdwbFk6Q6x4.vyt8F8OwgYdAxgdVkmG/OwLylI.2QKW",
+      "name": "Fahim",
+      "role": "student",
+      "id": 12
+    }
+  ],
+  "videos": [
+    {
+      "title": "Lecture - 122 | Blog API Implement Authentication and Authorization | Full-Stack Army",
+      "description": "আমাদের সাথে যোগাযোগ করুনঃ  \n---------------------------------------------------\nEmail: support@stacklearner.com\nফেসবুক পেজঃ https://fb.me/stacklearner \nফেসবুক গ্রুপঃ https://fb.com/groups/stacklearner \nLinkedIn পেজঃ https://linkedin.com/company/stacklea... \nTwitter: https://twitter.com/stacklearner\nInstagram: https://instagram.com/stacklearner",
+      "duration": "4:00:00",
+      "url": "https://www.youtube.com/embed/cbsifxLxNnE",
+      "views": "5",
+      "id": 1
+    }
+  ],
+  "assignments": [
+    {
+      "video_title": "Lecture - 122 | Blog API Implement Authentication and Authorization | Full-Stack Army",
+      "video_id": 1,
+      "totalMark": "100",
+      "title": "OOP Solve",
+      "id": 1
+    }
+  ],
+  "quizzes": [
+    {
+      "question": "What is Debounce",
+      "video_title": "Lecture - 122 | Blog API Implement Authentication and Authorization | Full-Stack Army",
+      "video_id": 1,
+      "options": [
+        {
+          "id": 1,
+          "option": "Debounce is a Bounce",
+          "isCorrect": false
+        },
+        {
+          "id": 2,
+          "option": "Debounce is a handle of Bounceing",
+          "isCorrect": true
+        },
+        {
+          "id": 3,
+          "option": "dgn  ",
+          "isCorrect": false
+        },
+        {
+          "id": 4,
+          "option": "dfbdf",
+          "isCorrect": false
+        }
+      ],
+      "id": 1
+    }
+  ],
+  "assignmentMark": [
+    {
+      "student_id": 12,
+      "student_name": "Fahim",
+      "title": "OOP Solve",
+      "repo_link": "https://github.com/rafeuddaraj/noipun-altrazen.git",
+      "assignment_id": 1,
+      "video_id": 1,
+      "video_title": "Lecture - 122 | Blog API Implement Authentication and Authorization | Full-Stack Army",
+      "totalMark": "100",
+      "mark": "70",
+      "status": "published",
+      "createdAt": "2024-01-03T21:23:23+06:00",
+      "id": 1
+    }
+  ],
+  "quizMark": [
+    {
+      "student_id": 12,
+      "student_name": "Fahim",
+      "video_id": 1,
+      "video_title": "Lecture - 122 | Blog API Implement Authentication and Authorization | Full-Stack Army",
+      "totalQuiz": 1,
+      "totalCorrect": 1,
+      "totalWrong": 0,
+      "totalMark": 5,
+      "mark": 5,
+      "id": 1
+    }
+  ],
+  "supports": [
+    {
+      "startTime": "2024-01-03T21:18",
+      "endTime": "2024-01-03T22:18",
+      "teacher": "Fahim",
+      "link": "https://meet.google.com/kmo-gvvr-rja?pli=1",
+      "id": 1
+    }
+  ],
+  "supportTickets": []
+}
